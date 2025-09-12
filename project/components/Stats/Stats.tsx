@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect } from 'react';
 import { Heart, Calendar, Users, Handshake, Award, Star, MapPin, Camera } from 'lucide-react';
 
