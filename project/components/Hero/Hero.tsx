@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Phone, Heart, Star, ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface HeroProps {
   onNavigate?: (page: string) => void;
@@ -9,6 +10,7 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [scrollY, setScrollY] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -19,6 +21,9 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const handleContactClick = () => {
     if (onNavigate) {
       onNavigate('contact');
+    } else {
+      // Navigate to contact page using Next.js router
+      router.push('/contact');
     }
   };
 
@@ -28,6 +33,19 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   const handleWhatsAppClick = () => {
     window.open('https://wa.me/918180939260', '_blank');
+  };
+
+  // Add navigation handlers for other sections
+  const handleServicesClick = () => {
+    router.push('/services');
+  };
+
+  const handleGalleryClick = () => {
+    router.push('/gallery');
+  };
+
+  const handleAboutClick = () => {
+    router.push('/about');
   };
 
   return (
@@ -59,6 +77,40 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <div className="absolute top-1/3 right-1/4 text-3xl opacity-20 animate-float" style={{ animationDelay: '1s' }}>✨</div>
       <div className="absolute bottom-1/3 left-1/3 text-5xl opacity-20 animate-float" style={{ animationDelay: '2s' }}>🎊</div>
       <div className="absolute bottom-1/4 right-1/3 text-3xl opacity-20 animate-float" style={{ animationDelay: '1.5s' }}>💐</div>
+
+      {/* Navigation Menu - Add this for better UX */}
+      <nav className="absolute top-6 left-0 right-0 z-20">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <div className="bg-white/10 backdrop-blur-md rounded-full px-6 py-3 flex space-x-6">
+              <button 
+                onClick={handleAboutClick}
+                className="text-white hover:text-pink-300 transition-colors duration-300 font-medium"
+              >
+                About
+              </button>
+              <button 
+                onClick={handleServicesClick}
+                className="text-white hover:text-pink-300 transition-colors duration-300 font-medium"
+              >
+                Services
+              </button>
+              <button 
+                onClick={handleGalleryClick}
+                className="text-white hover:text-pink-300 transition-colors duration-300 font-medium"
+              >
+                Gallery
+              </button>
+              <button 
+                onClick={handleContactClick}
+                className="text-white hover:text-pink-300 transition-colors duration-300 font-medium"
+              >
+                Contact
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
@@ -100,6 +152,14 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             >
               <Phone size={20} className="group-hover:scale-110 transition-transform duration-300" />
               <span>Call Now</span>
+            </button>
+
+            <button
+              onClick={handleServicesClick}
+              className="group bg-orange-500/20 backdrop-blur-md border-2 border-orange-300/30 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-orange-500/30 hover:border-orange-300/50 transition-all duration-300 flex items-center space-x-2 shadow-2xl hover:scale-105"
+            >
+              <span>View Services</span>
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
             </button>
           </div>
 

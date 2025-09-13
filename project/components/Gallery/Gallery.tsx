@@ -1,8 +1,13 @@
+"use client"
+
 import React, { useState } from 'react';
-import { Camera, Heart, Gift, Flower } from 'lucide-react';
+import { Camera, Heart, Gift, Flower, Eye, X } from 'lucide-react';
+import Image from 'next/image';
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [imageError, setImageError] = useState<{[key: number]: boolean}>({});
 
   const categories = [
     { name: 'All', icon: Camera },
@@ -12,25 +17,109 @@ const Gallery = () => {
     { name: 'Decorations', icon: Flower }
   ];
 
-  // Placeholder gallery items
+  // Gallery items with image paths
   const galleryItems = [
-    { id: 1, category: 'Weddings', title: 'Traditional Mandap Wedding', description: 'Beautiful golden mandap with floral decorations' },
-    { id: 2, category: 'Weddings', title: 'Destination Wedding Setup', description: 'Elegant beachside wedding arrangement' },
-    { id: 3, category: 'Birthdays', title: 'Princess Theme Birthday', description: 'Pink and gold birthday party setup' },
-    { id: 4, category: 'Engagements', title: 'Ring Ceremony Decoration', description: 'Romantic engagement ceremony setup' },
-    { id: 5, category: 'Decorations', title: 'Rangoli Art Display', description: 'Traditional rangoli with flower petals' },
-    { id: 6, category: 'Weddings', title: 'Reception Hall Setup', description: 'Grand reception with lighting and decor' },
-    { id: 7, category: 'Birthdays', title: 'Baby Shower Celebration', description: 'Pastel themed baby shower decoration' },
-    { id: 8, category: 'Decorations', title: 'Floral Entrance Arch', description: 'Stunning entrance with fresh flowers' },
-    { id: 9, category: 'Engagements', title: 'Garden Engagement Party', description: 'Outdoor engagement with fairy lights' },
-    { id: 10, category: 'Weddings', title: 'Mehendi Ceremony Setup', description: 'Vibrant mehendi function decoration' },
-    { id: 11, category: 'Decorations', title: 'Stage Background Design', description: 'Elegant stage backdrop with draping' },
-    { id: 12, category: 'Birthdays', title: 'Themed Kids Party', description: 'Fun and colorful children\'s birthday setup' }
+    { 
+      id: 1, 
+      category: 'Weddings', 
+      title: 'Traditional Mandap Wedding', 
+      description: 'Beautiful golden mandap with floral decorations',
+      image: '/images/gallery/weddings/wedding1.jpg'
+    },
+    { 
+      id: 2, 
+      category: 'Weddings', 
+      title: 'Destination Wedding Setup', 
+      description: 'Elegant beachside wedding arrangement',
+      image: '/images/gallery/weddings/wedding2.jpg'
+    },
+    { 
+      id: 3, 
+      category: 'Birthdays', 
+      title: 'Princess Theme Birthday', 
+      description: 'Pink and gold birthday party setup',
+      image: '/images/gallery/birthdays/birthday1.jpg'
+    },
+    { 
+      id: 4, 
+      category: 'Engagements', 
+      title: 'Ring Ceremony Decoration', 
+      description: 'Romantic engagement ceremony setup',
+      image: '/images/gallery/engagements/engagement1.jpg'
+    },
+    { 
+      id: 5, 
+      category: 'Decorations', 
+      title: 'Rangoli Art Display', 
+      description: 'Traditional rangoli with flower petals',
+      image: '/images/gallery/decorations/decoration1.jpg'
+    },
+    { 
+      id: 6, 
+      category: 'Weddings', 
+      title: 'Reception Hall Setup', 
+      description: 'Grand reception with lighting and decor',
+      image: '/images/gallery/weddings/wedding3.jpg'
+    },
+    { 
+      id: 7, 
+      category: 'Birthdays', 
+      title: 'Baby Shower Celebration', 
+      description: 'Pastel themed baby shower decoration',
+      image: '/images/gallery/birthdays/birthday2.jpg'
+    },
+    { 
+      id: 8, 
+      category: 'Decorations', 
+      title: 'Floral Entrance Arch', 
+      description: 'Stunning entrance with fresh flowers',
+      image: '/images/gallery/decorations/decoration2.jpg'
+    },
+    { 
+      id: 9, 
+      category: 'Engagements', 
+      title: 'Garden Engagement Party', 
+      description: 'Outdoor engagement with fairy lights',
+      image: '/images/gallery/engagements/engagement2.jpg'
+    },
+    { 
+      id: 10, 
+      category: 'Weddings', 
+      title: 'Mehendi Ceremony Setup', 
+      description: 'Vibrant mehendi function decoration',
+      image: '/images/gallery/weddings/wedding4.jpg'
+    },
+    { 
+      id: 11, 
+      category: 'Decorations', 
+      title: 'Stage Background Design', 
+      description: 'Elegant stage backdrop with draping',
+      image: '/images/gallery/decorations/decoration3.jpg'
+    },
+    { 
+      id: 12, 
+      category: 'Birthdays', 
+      title: 'Themed Kids Party', 
+      description: 'Fun and colorful children\'s birthday setup',
+      image: '/images/gallery/birthdays/birthday3.jpg'
+    }
   ];
 
   const filteredItems = activeCategory === 'All' 
     ? galleryItems 
     : galleryItems.filter(item => item.category === activeCategory);
+
+  const handleImageError = (itemId: number) => {
+    setImageError(prev => ({ ...prev, [itemId]: true }));
+  };
+
+  const openModal = (item: any) => {
+    setSelectedImage(item);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
 
   return (
     <section id="gallery" className="py-20 bg-gradient-to-br from-pink-50 to-purple-50">
@@ -72,37 +161,51 @@ const Gallery = () => {
           {filteredItems.map((item) => (
             <div
               key={item.id}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105"
+              className="group relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer"
+              onClick={() => openModal(item)}
             >
-              {/* Placeholder Image Area */}
-              <div className="aspect-square bg-gradient-to-br from-orange-200 via-pink-200 to-purple-200 relative overflow-hidden">
-                {/* Image Placeholder with Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Camera Icon as Placeholder */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Camera size={48} className="text-gray-400 group-hover:text-white transition-colors duration-300" />
-                </div>
+              {/* Image Area */}
+              <div className="aspect-square relative overflow-hidden">
+                {!imageError[item.id] ? (
+                  <>
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={() => handleImageError(item.id)}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    {/* Dark Overlay on Hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </>
+                ) : (
+                  /* Fallback when image fails to load */
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-200 via-pink-200 to-purple-200 flex items-center justify-center">
+                    <Camera size={48} className="text-gray-400" />
+                  </div>
+                )}
 
                 {/* Category Badge */}
-                <div className="absolute top-3 left-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute top-3 left-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
                   {item.category}
                 </div>
 
                 {/* View Button - Shows on Hover */}
-                <button className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
-                  <span className="bg-white text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 hover:text-white transition-all duration-300">
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="bg-white/90 backdrop-blur-sm text-gray-800 px-4 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 hover:text-white transition-all duration-300">
+                    <Eye size={16} />
                     View Details
-                  </span>
-                </button>
+                  </div>
+                </div>
               </div>
 
               {/* Content */}
               <div className="p-4">
-                <h3 className="font-bold text-lg text-gray-800 mb-2 group-hover:text-pink-600 transition-colors duration-300">
+                <h3 className="font-bold text-lg text-gray-800 mb-2 group-hover:text-pink-600 transition-colors duration-300 line-clamp-2">
                   {item.title}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm line-clamp-2">
                   {item.description}
                 </p>
               </div>
@@ -117,14 +220,55 @@ const Gallery = () => {
           </button>
         </div>
 
-        {/* Note for Images */}
+        {/* Image Modal */}
+        {selectedImage && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800">{selectedImage.title}</h3>
+                  <p className="text-gray-600">{selectedImage.category}</p>
+                </div>
+                <button
+                  onClick={closeModal}
+                  className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6">
+                <div className="aspect-video relative mb-4 rounded-lg overflow-hidden">
+                  {!imageError[selectedImage.id] ? (
+                    <Image
+                      src={selectedImage.image}
+                      alt={selectedImage.title}
+                      fill
+                      className="object-cover"
+                      sizes="90vw"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-200 via-pink-200 to-purple-200 flex items-center justify-center">
+                      <Camera size={64} className="text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <p className="text-gray-700 text-lg">{selectedImage.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Note for Missing Images */}
         <div className="mt-16 text-center">
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-pink-200 max-w-2xl mx-auto">
             <Camera className="mx-auto mb-3 text-pink-500" size={32} />
-            <h4 className="font-bold text-gray-800 mb-2">Gallery Images Coming Soon</h4>
+            <h4 className="font-bold text-gray-800 mb-2">Add Your Gallery Images</h4>
             <p className="text-gray-600 text-sm">
-              We're currently updating our gallery with beautiful high-resolution images of our recent events. 
-              Each placeholder will be replaced with stunning photography showcasing our work.
+              Place your images in <code className="bg-gray-100 px-2 py-1 rounded text-xs">public/images/gallery/</code> folder.
+              Images that can't be loaded will show a placeholder until you add them.
             </p>
           </div>
         </div>
@@ -134,5 +278,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
-
