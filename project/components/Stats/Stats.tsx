@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart, Calendar, Users, Handshake, Award, Star, MapPin, Camera } from 'lucide-react';
 
 const Stats = () => {
-  const [counters, setCounters] = useState({
+  const [counters, setCounters] = useState<any>({
     couples: 0,
     experience: 0,
     events: 0,
@@ -90,10 +90,11 @@ const Stats = () => {
       return setInterval(() => {
         currentCount += increment;
         if (currentCount >= stat.number) {
-          setCounters(prev => ({ ...prev, [stat.key]: stat.number }));
+          
+          setCounters((prev:any) => ({ ...prev, [stat.key]: stat.number }));
           clearInterval(timers.find(timer => timer === this));
         } else {
-          setCounters(prev => ({ ...prev, [stat.key]: Math.floor(currentCount) }));
+          setCounters((prev:any) => ({ ...prev, [stat.key]: Math.floor(currentCount) }));
         }
       }, stepDuration);
     });

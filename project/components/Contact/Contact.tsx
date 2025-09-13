@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Send, CheckCircle } from 'lucide-react';
 
@@ -25,7 +26,7 @@ const Contact = () => {
     'Cinematic Videography'
   ];
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<any>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,

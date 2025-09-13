@@ -8,7 +8,7 @@ export const metadata = {
   description: 'We Build Your Dream Around You - Premium Indian Wedding & Event Planning',
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }:any) {
   return (
     <html lang="en">
       <body className="min-h-screen bg-gray-50">
